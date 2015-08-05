@@ -1,0 +1,20 @@
+{
+  "name": "yn_welcome_live",
+  "version": "1.0.0",
+  "description": "simple welcome report for YNU",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.13.2",
+    "eventproxy": "^0.3.4",
+    "express": "^4.13.1",
+    "moment": "^2.10.6",
+    "oracledb": "^0.7.0",
+    "sequelize-oracle": "^1.7.10",
+    "wechat-enterprise": "^0.1.0"
+  }
+}

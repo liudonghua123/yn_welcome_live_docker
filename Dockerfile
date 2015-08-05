@@ -12,10 +12,10 @@ ENV LD_LIBRARY_PATH /opt/oracle/instantclient:$LD_LIBRARY_PATH
 ENV OCI_LIB_DIR /opt/oracle/instantclient
 ENV OCI_INC_DIR /opt/oracle/instantclient/sdk/include
 
-# clone the source code of yn_welcome_live
-RUN git clone https://github.com/liudonghua123/yn_welcome_live.git
+# add the code to /app
+ADD app /app
 # change work directory
-WORKDIR yn_welcome_live
+WORKDIR /app
 # install the dependencies of the node application
 RUN npm install
 

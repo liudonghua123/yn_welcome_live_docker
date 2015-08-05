@@ -1,0 +1,16 @@
+app:
+    image: ynuae/yn_welcome_live_docker
+    ports:
+     - "9000:9000"
+    restart: always
+    environment:
+     # the following seven environment variables are needed to run this app, set them on the base using export command
+     - TOKEN
+     - AESKEY
+     - CORPID
+     - DB_USER
+     - PASSWORD
+     - DB_HOST
+     - DB_DATABASE
+     - NLS_LANG=SIMPLIFIED CHINESE_CHINA.UTF8
+
