@@ -49,10 +49,10 @@ oracledb.getConnection(
 
 
 router.use('/', wechat(config, wechat.event(function (msg, req, res, next) {
-    // request country_summary menu
-    if (msg.EventKey == "country_summary") {
+    // 全校本科生概况
+    if (msg.EventKey == "totalUndergraduateSummary") {
         connection.execute(
-            sql_string.totalSummarySQL,
+            sql_string.totalUndergraduateSummarySQL,
             [],
             function (err, result) {
                 if (err) {
@@ -60,7 +60,7 @@ router.use('/', wechat(config, wechat.event(function (msg, req, res, next) {
                     res.reply(JSON.stringify({message: err.message}));
                     return;
                 }
-                res.reply(util.format('迎新统计（全国概况）\n\n' +
+                res.reply(util.format('迎新统计（全校本科生概况）\n\n' +
                     '总人数：%d\n' +
                     '已报到人数：%d\n' +
                     '未报到人数：%d\n' +
@@ -68,8 +68,46 @@ router.use('/', wechat(config, wechat.event(function (msg, req, res, next) {
                     result.rows[0][0], result.rows[0][1], result.rows[0][2], Math.round (result.rows[0][3] * 100) / 100));
             });
     }
-    // request province_summary of undergraduate menu
-    else if (msg.EventKey == "2015本科生迎新") {
+    // 全校研究生概况
+    else if (msg.EventKey == "totalGraduateSummary") {
+        connection.execute(
+            sql_string.totalGraduateSummarySQL,
+            [],
+            function (err, result) {
+                if (err) {
+                    console.error(err.message);
+                    res.reply(JSON.stringify({message: err.message}));
+                    return;
+                }
+                res.reply(util.format('迎新统计（全校研究生概况）\n\n' +
+                    '总人数：%d\n' +
+                    '已报到人数：%d\n' +
+                    '未报到人数：%d\n' +
+                    '报到率：%d\%',
+                    result.rows[0][0], result.rows[0][1], result.rows[0][2], Math.round (result.rows[0][3] * 100) / 100));
+            });
+    }
+    // 全校博士生概况
+    else if (msg.EventKey == "totalDoctorSummary") {
+        connection.execute(
+            sql_string.totalDoctorSummarySQL,
+            [],
+            function (err, result) {
+                if (err) {
+                    console.error(err.message);
+                    res.reply(JSON.stringify({message: err.message}));
+                    return;
+                }
+                res.reply(util.format('迎新统计（全校博士生概况）\n\n' +
+                    '总人数：%d\n' +
+                    '已报到人数：%d\n' +
+                    '未报到人数：%d\n' +
+                    '报到率：%d\%',
+                    result.rows[0][0], result.rows[0][1], result.rows[0][2], Math.round (result.rows[0][3] * 100) / 100));
+            });
+    }
+    // 院系本科生概况
+    else if (msg.EventKey == "undergraduateSummary") {
         connection.execute(
             sql_string.undergraduateSummarySQL,
             [],
@@ -80,7 +118,7 @@ router.use('/', wechat(config, wechat.event(function (msg, req, res, next) {
                     return;
                 }
                 var summary = [];
-                summary.push("2015本科生迎新\n学院： 总人数/未报到");
+                summary.push("2015本科生迎新\n学院： 总人数/已报到");
                 for(i = 0; i < result.rows.length; i++) {
                     summary.push(util.format('%s (%d/%d)\n' +
                         '报到率：%d\%',
@@ -89,8 +127,8 @@ router.use('/', wechat(config, wechat.event(function (msg, req, res, next) {
                 res.reply(summary.join("\n\n"));
             });
     }
-    // request institution_summary of graduate menu
-    else if (msg.EventKey == "2015研究生迎新") {
+    // 院系研究生概况
+    else if (msg.EventKey == "graduateSummary") {
         connection.execute(
             sql_string.graduateSummarySQL,
             [],
@@ -101,7 +139,28 @@ router.use('/', wechat(config, wechat.event(function (msg, req, res, next) {
                     return;
                 }
                 var summary = [];
-                summary.push("2015研究生迎新\n学院： 总人数/未报到");
+                summary.push("2015研究生迎新\n学院： 总人数/已报到");
+                for(i = 0; i < result.rows.length; i++) {
+                    summary.push(util.format('%s (%d/%d)\n' +
+                        '报到率：%d\%',
+                        result.rows[i][0], result.rows[i][1], result.rows[i][2], Math.round (result.rows[i][4] * 100) / 100));
+                }
+                res.reply(summary.join("\n\n"));
+            });
+    }
+    // 院系博士生概况
+    else if (msg.EventKey == "doctorSummary") {
+        connection.execute(
+            sql_string.doctorSummarySQL,
+            [],
+            function (err, result) {
+                if (err) {
+                    console.error(err.message);
+                    res.reply(JSON.stringify({message: err.message}));
+                    return;
+                }
+                var summary = [];
+                summary.push("2015研究生迎新\n学院： 总人数/已报到");
                 for(i = 0; i < result.rows.length; i++) {
                     summary.push(util.format('%s (%d/%d)\n' +
                         '报到率：%d\%',
